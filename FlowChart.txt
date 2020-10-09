@@ -9,3 +9,8 @@ input(sbler)
 4 - If no price, get the price and name info by searching model 
 5- If no price, multiply the wholesale price by 1.25
 
+
+
+Problem at csv 63:
+	KeyError
+	There was a space in the model number string

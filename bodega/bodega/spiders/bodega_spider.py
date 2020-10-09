@@ -1,15 +1,19 @@
 import scrapy
 import pandas as pd
 import time
-
+import openpyxl
+from bodega.items import BodegaItem
+import csv
 
 data = pd.read_excel('C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\sbler-Copy.xlsx', header=None)
 
 ID =data[0].tolist()
 
 
+
 def read_csv(name):
-	data = pd.read_csv(r'C:\Users\Ousmane Kana\Desktop\Bodega\dataBase\557223.csv')
+	data = pd.read_csv("C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\dataBase\\"+str(name)+".csv")
+	data = data.dropna(axis="columns", how="any")
 	Model_Numbers = data['Model Numbers'].values.tolist()
 	SKU =  data['SKU'].values.tolist()
 
@@ -24,17 +28,6 @@ def Wholesale_Link(item):
    
     link = "https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn="+str(item)+"&wid=8617&sbn="+str(item)
     return (link)
-
-
-def HD_Link(item):
-    
-    links= []
-    
-    for models in read_csv(ID):
-        link = ("https://www.homedepot.com/s/"+str(models))
-        links.append(link)
-
-    return(links)
 
 
 class Wholesale_Spider(scrapy.Spider):
@@ -66,7 +59,7 @@ class Wholesale_Spider(scrapy.Spider):
 		# Iterate through the table to get all the stuffs
 
 		SKU = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[1]//text()").extract()
-		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
+		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract().replace(" ","")
 
 
 		#List of the important Juice 
@@ -99,36 +92,59 @@ class Wholesale_Spider(scrapy.Spider):
 
 class Homedepot_spider(scrapy.Spider):
 
+
+
+
+
 	name ="homedepot"
 
 
-	allowed_domain = ["www.homedepot.com"]
-
-	Links = map(HD_Link, ID)
-	Link = list(Links)
-	flat_list = [item for sublist in Link for item in sublist]
-	print(flat_list[0:5])
-
-	start_urls = flat_list[0:5]
+	allowed_domains = ["www.homedepot.com"]
 
 
 
 
+	def start_requests(self):
+		global itter, models, element
 
-	
+		itter = 0 
+		models = 0
+		elements = 0
 
+
+
+		# ID  here is the list of all the elements from the BIG CSV
+		for element in ID:
+			elements = element
+			#Models are the read of the read_csv is return a list of the model#s
+			for model in read_csv(element):
+				models = model
+
+
+					
+
+					
+				link = ("https://www.homedepot.com/s/"+str(model))
+					
+				itter = itter +1
+
+
+				yield scrapy.Request(link, self.parse)
 
 	def parse(self,response):
 
+		items = BodegaItem()
 
-		price = response.xpath('//span[@class="price__dollars"]/text()').extract()
-		name = response.xpath('//h1[@class="product-title__title"]/text()').extract()
 
-		print("\n\n\n\n********************************")
-		print(response.url)
-		print(f"The price is {price}")
-		print(f"The name is {name}")
-		print("\n\n\n\n********************************")
+		item['price'] = response.xpath('//span[@class="price__dollars"]/text()').extract()
+		item['name'] = response.xpath('//h1[@class="product-title__title"]/text()').extract()
+			
+			# with open(r"C:\Users\Ousmane Kana\Desktop\Bodega\dataBase\test1.csv", 'w') as myfile:
+			# 	wr = csv.writer(myfile, delimiter='\t',lineterminator='\n')
+			# 	wr.writerow(ID)
+
+			
+		
 
 
 
