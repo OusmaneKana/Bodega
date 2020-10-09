@@ -3,19 +3,27 @@ import pandas as pd
 import pandas as pd 
 
 
-data = pd.read_excel('C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\sbler.xlsx', header=None)
+data = pd.read_excel('C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\sbler-Copy.xlsx', header=None)
 
 serials =data[0].tolist()
+
+def LinkMaker(ID):
+    
+    link = "https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn="+str(ID)+"&wid=8617&sbn="+str(ID)
+    return (link)
+
+
+
 
 
 class BodegaSpider(scrapy.Spider):
 	name = "homedepot"
+
 	allowed_domain = ["https://www.thdsalvage.com/"]
 
+	link = map(LinkMaker, serials)
 
-
-	start_urls = ['https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn=557223&wid=8617&sbn=557223',
-	]
+	start_urls = list(link)
 
 
 	def parse(self, response):
@@ -29,11 +37,7 @@ class BodegaSpider(scrapy.Spider):
 
 		Container_Qty = response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[1]//text()").extract()[12]
 
-
-
 		# Iterate through the table to get all the stuffs
-
-
 
 		SKU = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[1]//text()").extract()
 		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
@@ -47,13 +51,13 @@ class BodegaSpider(scrapy.Spider):
 
 		ItemsDf = pd.DataFrame(list(zip(SKU, Model_number)), columns =['SKU', "Model Numbers"])
 
-		print(ItemsDf)
+		print(ItemsDf.head())
 
 		#print("*****************************************")
 
-		#print("The current output is ")
 
-		#print("The Category is {} is located in {} and the quantity of the container is {}".format(Category, Warehouse, Container_Qty))
+		
+		print("\nThe Category is {} is located in {} and the quantity of the container is {}\n\n".format(Category, Warehouse, Container_Qty))
 
 
 		#print(SKU, Model_number)
