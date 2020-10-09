@@ -9,6 +9,13 @@ https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn={}&wid=8617&sbn={}
 
 
 
+def HD_Link(item):
+    
+    link = "https://homedepot.com/s/"+str(ID)
+    return (link)
+
+    
+
 Extract Descriptoo:
 
 response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[2]//text()")
@@ -18,3 +25,20 @@ response.xpath(//table[@style="border:2px #000000 solid; border-collapse:collaps
 
 
 style="border:2px #000000 solid; border-collapse:collapse; width: 100%"
+
+
+
+
+ 
+    Models = map(read_csv, ID)
+    l = list(Models)
+    
+    links=[]
+    
+    for i in l:
+        for j in i:
+            url = "www.homedepot.com/s/"+j
+            links.append(url)
+    
+    
+    return (links)
