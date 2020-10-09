@@ -3,7 +3,7 @@ import pandas as pd
 import pandas as pd 
 
 
-data = pd.read_excel('C:\\Users\\Ousmane Kana\\OneDrive\\Projects\\Bodega\\sbler.xlsx', header=None)
+data = pd.read_excel('C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\sbler.xlsx', header=None)
 
 serials =data[0].tolist()
 
@@ -14,7 +14,8 @@ class BodegaSpider(scrapy.Spider):
 
 
 
-	start_urls = ['https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn=557223&wid=8617&sbn=557223']
+	start_urls = ['https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn=557223&wid=8617&sbn=557223',
+	]
 
 
 	def parse(self, response):
@@ -22,19 +23,43 @@ class BodegaSpider(scrapy.Spider):
 		# with open(filename, "wb") as f:
 		# 	f.write(response.body)
 
+		Category = response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[1]//text()").extract()[8]
+
+		Warehouse = response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[1]//text()").extract()[6]
+
+		Container_Qty = response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[1]//text()").extract()[12]
+
+
+
+		# Iterate through the table to get all the stuffs
+
+
 
 		SKU = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[1]//text()").extract()
-
 		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
 
+
+		#List of the important Juice 
+
+		# print(len(SKU))
+		# print(len(Model_number))
+
+
+		ItemsDf = pd.DataFrame(list(zip(SKU, Model_number)), columns =['SKU', "Model Numbers"])
+
+		print(ItemsDf)
+
+		#print("*****************************************")
+
+		#print("The current output is ")
+
+		#print("The Category is {} is located in {} and the quantity of the container is {}".format(Category, Warehouse, Container_Qty))
+
+
+		#print(SKU, Model_number)
+
 		print("*****************************************")
 
-		print("The current output is ")
-
-
-		print(SKU, Model_number)
-
-		print("*****************************************")
 
 		# price = response.xpath('//span[@class="price__dollars"]/text()').extract()
 		# name = response.xpath('//h1[@class="product-title__title"]/text()').extract()
