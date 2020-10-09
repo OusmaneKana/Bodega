@@ -1,0 +1,18 @@
+
+scrapy crawl homedepot -s  LOG_ENABLED=False
+
+The link to parse is:
+
+https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn=557223&wid=8617&sbn=557223
+
+https://www.thdsalvage.com/Inventory/Detail?wid=8617&sbn={}&wid=8617&sbn={}
+
+
+
+
+Extract tables xpath:
+
+response.xpath(//table[@style="border:2px #000000 solid; border-collapse:collapse; width: 100%"]//td[2]//text())
+
+
+style="border:2px #000000 solid; border-collapse:collapse; width: 100%"

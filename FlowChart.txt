@@ -1,0 +1,11 @@
+Flowchart from Mr Ash: 
+
+
+input(sbler)
+
+1- Get the hyperlink from xlsx file 
+2- Get the headers from the tables 
+3- Get the price and name info ny searching SKU 
+4 - If no price, get the price and name info by searching model 
+5- If no price, multiply the wholesale price by 1.25
+
