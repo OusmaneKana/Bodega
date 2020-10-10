@@ -133,10 +133,26 @@ class Homedepot_spider(scrapy.Spider):
 
 	def parse(self,response):
 
-		items = BodegaItem()
+		item = BodegaItem()
 
-		price =response.xpath('//span[@class="price__dollars"]/text()').extract().pop()
-		print(price)
+		try:
+			name = response.xpath('//h1[@class="product-title__title"]/text()').extract().pop()
+			price = str(response.xpath('//span[@class="price__dollars"]/text()').extract().pop()).strip()
+			item['name'] =name
+			item['price'] = price
+
+			print(price)
+			print(name)
+
+		except IndexError:
+			price ='Not Found'
+			item['price'] = price
+			print(price)
+
+		yield item
+
+
+		
 		# item['name'] = response.xpath('//h1[@class="product-title__title"]/text()').extract()
 		# item['price'] = int(response.xpath('//span[@class="price__dollars"]/text()').extract()[0])
 			

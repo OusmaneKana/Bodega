@@ -21,6 +21,10 @@ ROBOTSTXT_OBEY = False
 
 LOG_LEVEL = 'INFO'
 
+ITEM_PIPELINES = {
+    'bodega.pipelines.BodegaPipeline': 15,
+}
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
@@ -64,9 +68,7 @@ LOG_LEVEL = 'INFO'
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'bodega.pipelines.BodegaPipeline': 300,
-#}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
