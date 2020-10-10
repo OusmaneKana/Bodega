@@ -135,9 +135,10 @@ class Homedepot_spider(scrapy.Spider):
 
 		items = BodegaItem()
 
-
-		item['price'] = response.xpath('//span[@class="price__dollars"]/text()').extract()
-		item['name'] = response.xpath('//h1[@class="product-title__title"]/text()').extract()
+		price =response.xpath('//span[@class="price__dollars"]/text()').extract().pop()
+		print(price)
+		# item['name'] = response.xpath('//h1[@class="product-title__title"]/text()').extract()
+		# item['price'] = int(response.xpath('//span[@class="price__dollars"]/text()').extract()[0])
 			
 			# with open(r"C:\Users\Ousmane Kana\Desktop\Bodega\dataBase\test1.csv", 'w') as myfile:
 			# 	wr = csv.writer(myfile, delimiter='\t',lineterminator='\n')
