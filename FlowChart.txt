@@ -14,3 +14,10 @@ input(sbler)
 Problem at csv 63:
 	KeyError
 	There was a space in the model number string
+
+
+
+
+
+
+https://gist.github.com/gbirke/abc10c81aca8242b880a
