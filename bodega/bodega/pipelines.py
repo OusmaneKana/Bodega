@@ -18,8 +18,8 @@ class BodegaPipeline:
 		self.file.close()
 
 
-    def process_item(self, item, spider):
+	def process_item(self, item, spider):
 
 		line = json.dumps(ItemAdapter(item).asdict()) + "\n"
 		self.file.write(line)
-        return item
+		return item

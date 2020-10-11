@@ -59,7 +59,7 @@ class Wholesale_Spider(scrapy.Spider):
 		# Iterate through the table to get all the stuffs
 
 		SKU = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[1]//text()").extract()
-		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract().replace(" ","")
+		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
 
 
 		#List of the important Juice 
@@ -120,10 +120,6 @@ class Homedepot_spider(scrapy.Spider):
 			for model in read_csv(element):
 				models = model
 
-
-					
-
-					
 				link = ("https://www.homedepot.com/s/"+str(model))
 					
 				itter = itter +1
