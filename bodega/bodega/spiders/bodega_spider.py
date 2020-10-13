@@ -38,7 +38,7 @@ class Wholesale_Spider(scrapy.Spider):
 
 	link = map(Wholesale_Link, ID)
 
-	start_urls = list(link)
+	start_urls = list(link)[0:2]
 
 
 	def parse(self, response):
@@ -62,25 +62,17 @@ class Wholesale_Spider(scrapy.Spider):
 		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
 
 
+		for sku in SKU[0:5]:
+				new_link = 'https://www.homedepot.com/s/'+str(sku)
+				print(new_link)
+				yield response.follow(new_link, callback=self.parse_homedepot,
+                                  meta={'SB':SB, 'SKU':sku})
+
+
 		#List of the important Juice 
 
 		# print(len(SKU))
 		# print(len(Model_number))
-
-
-		ItemsDf = pd.DataFrame(list(zip(SKU, Model_number)), columns =['SKU', "Model Numbers"])
-
-		ItemsDf.to_csv(r"C:\Users\Ousmane Kana\Desktop\Bodega\dataBase\\"+str(SB)+".csv", index = False, header=True)
-
-		print(ItemsDf.head())
-
-		#print("*****************************************")
-		print("\nThe Category is {} is located in {} and the quantity of the container is {}\n\n".format(Category, Warehouse, Container_Qty))
-
-		
-
-		#print(SKU, Model_number)
-		print("*****************************************")
 
 		# price = response.xpath('//span[@class="price__dollars"]/text()').extract()
 		# name = response.xpath('//h1[@class="product-title__title"]/text()').extract()
@@ -89,6 +81,48 @@ class Wholesale_Spider(scrapy.Spider):
 		# print(f"The price is {price}")
 		# print(f"The name is {name}")
 		# print("\n\n\n\n********************************")
+
+	def parse_homedepot(self,response):
+
+			
+		print("*****************************************")
+
+		print(f"The current meta data is {response.meta['SB']}")
+		print(f"The current sku is {response.meta['SKU']}")
+
+		#	item = BodegaItem()
+
+		try:
+			name = response.xpath('//h1[@class="product-title__title"]/text()').extract().pop()
+		except:
+			name = 'Not found'
+
+		try:
+			price = str(response.xpath('//span[@class="price__dollars"]/text()').extract().pop()).strip()
+		except:
+			price = 'Not found'
+			
+			# item['name'] =name
+			# item['price'] = price
+
+			# print(price)
+			# print(name)
+
+		yield item	
+			# ItemsDf = pd.DataFrame(list(zip(SKU, Model_number)), columns =['SKU', "Model Numbers"])
+
+
+			# ItemsDf.to_csv(r"C:\Users\Ousmane Kana\Desktop\Bodega\dataBase\\"+str(SB)+".csv", index = False, header=True)
+
+			# print(ItemsDf.head())
+
+			# #print("*****************************************")
+			# print("\nThe Category is {} is located in {} and the quantity of the container is {}\n\n".format(Category, Warehouse, Container_Qty))
+
+			
+
+			#print(SKU, Model_number)
+
 
 class Homedepot_spider(scrapy.Spider):
 
@@ -102,51 +136,7 @@ class Homedepot_spider(scrapy.Spider):
 	allowed_domains = ["www.homedepot.com"]
 
 
-
-
-	def start_requests(self):
-		global itter, models, element
-
-		itter = 0 
-		models = 0
-		elements = 0
-
-
-
-		# ID  here is the list of all the elements from the BIG CSV
-		for element in ID:
-			elements = element
-			#Models are the read of the read_csv is return a list of the model#s
-			for model in read_csv(element):
-				models = model
-
-				link = ("https://www.homedepot.com/s/"+str(model))
-					
-				itter = itter +1
-
-
-				yield scrapy.Request(link, self.parse)
-
-	def parse(self,response):
-
-		item = BodegaItem()
-
-		try:
-			name = response.xpath('//h1[@class="product-title__title"]/text()').extract().pop()
-			price = str(response.xpath('//span[@class="price__dollars"]/text()').extract().pop()).strip()
-			item['name'] =name
-			item['price'] = price
-
-			print(price)
-			print(name)
-
-		except IndexError:
-			price ='Not Found'
-			item['price'] = price
-			print(price)
-
-		yield item
-
+	
 
 		
 		# item['name'] = response.xpath('//h1[@class="product-title__title"]/text()').extract()

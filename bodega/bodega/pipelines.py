@@ -12,7 +12,7 @@ from itemadapter import ItemAdapter
 class BodegaPipeline:
 
 	def open_spider(self, spider):
-		self.file = open('items.jl', 'w')
+		self.file = open('items.txt', 'w')
 
 	def close_spider(self, spider):
 		self.file.close()
