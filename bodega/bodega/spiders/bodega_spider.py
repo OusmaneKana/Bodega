@@ -55,7 +55,7 @@ class Wholesale_Spider(scrapy.Spider):
 		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
 
 
-		for sku in SKU[0:10]:
+		for sku in SKU[0:2]:
 				new_link = 'https://www.homedepot.com/s/'+str(sku)
 				# if (urllib.request.urlopen(new_link).getcode()) == 200:
 

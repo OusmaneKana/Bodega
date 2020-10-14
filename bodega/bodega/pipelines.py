@@ -38,7 +38,7 @@ class BodegaPipeline:
 
 	def process_item(self, item, spider):
 
-		self.file_csv = open(str(item['SB'])+'.csv', 'a+')
+		self.file_csv = open(str(item['SB'])+'.csv', 'a+', newline='')
 		fieldnames = ['name', 'SKU', 'SB']
 		self.writer = csv.DictWriter(self.file_csv, fieldnames=fieldnames)
 

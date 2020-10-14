@@ -18,27 +18,12 @@ def HD_Link(item):
 
 Extract Descriptoo:
 
-response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[2]//text()")
-Extract tables xpath:
+	response.xpath("//table[@style=\"text-align:right; width:100%\"]//td[2]//text()")
+	Extract tables xpath:
 
-response.xpath(//table[@style="border:2px #000000 solid; border-collapse:collapse; width: 100%"]//td[2]//text())
-
-
-style="border:2px #000000 solid; border-collapse:collapse; width: 100%"
+	response.xpath(//table[@style="border:2px #000000 solid; border-collapse:collapse; width: 100%"]//td[2]//text())
 
 
+	style="border:2px #000000 solid; border-collapse:collapse; width: 100%"
 
-
- 
-    Models = map(read_csv, ID)
-    l = list(Models)
-    
-    links=[]
-    
-    for i in l:
-        for j in i:
-            url = "www.homedepot.com/s/"+j
-            links.append(url)
-    
-    
-    return (links)
+	price =  response.xpath('/html/body/div[6]/div/div[4]/div/div/div[3]/div/div/div[3]/div/div/div/div/span[2]//text()').extract()
