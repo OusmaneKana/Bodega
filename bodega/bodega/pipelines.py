@@ -14,13 +14,14 @@ import csv
 
 class BodegaPipeline:
 
+
 	
 
 	def open_spider(self, spider):
 		print("This is the OPEN SPIDER")
 
 
-		self.file = open('test.txt', 'w')
+		self.file_txt = open('test.txt', 'w')
 
 
 		
@@ -30,25 +31,31 @@ class BodegaPipeline:
 		print("This is the CLOSE SPIDER")
 
 	
-		self.file.close()
+		self.file_txt.close()
+
+		self.file_csv.close()
 
 
 	def process_item(self, item, spider):
 
-		with open(str(item['SB'])+'.csv', mode='a+') as csv_file:
-			fieldnames = ['name', 'SKU', 'SB']
-			writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+		self.file_csv = open(str(item['SB'])+'.csv', 'a+')
+		fieldnames = ['name', 'SKU', 'SB']
+		self.writer = csv.DictWriter(self.file_csv, fieldnames=fieldnames)
 
-			writer.writerow(item)
+		self.writer.writerow(item)
 
-		print("This is the PROCESS ITEM STAGE")
-		self.file = open(str(item['SB'])+'.txt', 'a+')
 		line = json.dumps(ItemAdapter(item).asdict()) + "\n"
 
+		self.file_txt.write(line)
+
+
+		print("This is the PROCESS ITEM STAGE")
+		
+		
 		
 		print(line)
 
-		self.file.write(line)
+		
 
 		
 		return item

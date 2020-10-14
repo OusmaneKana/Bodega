@@ -11,23 +11,13 @@ data = pd.read_excel('C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\sbler-Copy.xlsx'
 
 ID =data[0].tolist()
 
-names =[]
-prices =[]
+for element in ID:
+	with open(f'{str(element)}.csv', mode='a') as csv_file:
+		fieldnames = ['Name', 'SKU', 'BS']
+		writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+		writer.writeheader()
 
 
-
-
-def read_csv(name):
-	data = pd.read_csv("C:\\Users\\Ousmane Kana\\Desktop\\Bodega\\dataBase\\"+str(name)+".csv")
-	data = data.dropna(axis="columns", how="any")
-	Model_Numbers = data['Model Numbers'].values.tolist()
-	SKU =  data['SKU'].values.tolist()
-
-	return(SKU)
-
-def write_out(name):
-	names.append(name)
-	print(names)
 
 def Wholesale_Link(item):
    
@@ -42,6 +32,7 @@ class Wholesale_Spider(scrapy.Spider):
 	name = "wholesale"
 
 	allowed_domain = ["https://www.thdsalvage.com/"]
+
 
 	link = map(Wholesale_Link, ID)
 
@@ -67,6 +58,7 @@ class Wholesale_Spider(scrapy.Spider):
 		for sku in SKU[0:10]:
 				new_link = 'https://www.homedepot.com/s/'+str(sku)
 				# if (urllib.request.urlopen(new_link).getcode()) == 200:
+
 				yield response.follow(new_link, callback=self.parse_homedepot,meta={'SB':SB, 'SKU':sku})
 
 	def parse_homedepot(self,response):
