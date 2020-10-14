@@ -8,13 +8,13 @@
 import json
 from itemadapter import ItemAdapter
 import pandas as pd
+import csv
 
-SB =[]
+
 
 class BodegaPipeline:
 
 	
-
 
 	def open_spider(self, spider):
 		print("This is the OPEN SPIDER")
@@ -28,24 +28,24 @@ class BodegaPipeline:
 	def close_spider(self, spider):
 		
 		print("This is the CLOSE SPIDER")
-		
+
+	
 		self.file.close()
 
 
 	def process_item(self, item, spider):
 
+		with open(str(item['SB'])+'.csv', mode='a+') as csv_file:
+			fieldnames = ['name', 'SKU', 'SB']
+			writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+			writer.writerow(item)
+
 		print("This is the PROCESS ITEM STAGE")
-		
-
-		SB.append(item['SB']) if item['SB'] not in SB else SB
-
-		print(SB)
-
 		self.file = open(str(item['SB'])+'.txt', 'a+')
-
-		
 		line = json.dumps(ItemAdapter(item).asdict()) + "\n"
 
+		
 		print(line)
 
 		self.file.write(line)
