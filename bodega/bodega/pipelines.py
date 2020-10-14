@@ -11,26 +11,19 @@ import pandas as pd
 import csv
 
 
-
 class BodegaPipeline:
 
-
-	
-
 	def open_spider(self, spider):
-		print("This is the OPEN SPIDER")
 
+		#Create an text file as output log
+		self.file_txt = open('output_log.txt', 'w')
 
-		self.file_txt = open('test.txt', 'w')
-
-
-		
 
 	def close_spider(self, spider):
 		
-		print("This is the CLOSE SPIDER")
+		# print("This is the CLOSE SPIDER")
 
-	
+		# Closes both the csv and the txt file(s)
 		self.file_txt.close()
 
 		self.file_csv.close()
@@ -38,21 +31,29 @@ class BodegaPipeline:
 
 	def process_item(self, item, spider):
 
-		self.file_csv = open(str(item['SB'])+'.csv', 'a+', newline='')
-		fieldnames = ['name', 'SKU', 'SB']
-		self.writer = csv.DictWriter(self.file_csv, fieldnames=fieldnames)
 
-		self.writer.writerow(item)
+		#Overrite the CSVs that were crated at the beginning of the program execution in bodega_spider.py
+
+		self.file_csv = open(str(item['SB'])+'.csv', 'a+', newline='')
+		fieldnames = ['SKU', 'Model_number','Name','Wholesale_Price','Price']
+		self.writer = csv.DictWriter(self.file_csv, fieldnames=fieldnames)
 
 		line = json.dumps(ItemAdapter(item).asdict()) + "\n"
 
+
+		# Pops the SB before writing it to the CSV to avoid a Missing header Error
+		item.pop('SB', None)
+
+		self.writer.writerow(item)
+
+		
+		# Writes to the output_log.txt
 		self.file_txt.write(line)
 
 
-		print("This is the PROCESS ITEM STAGE")
 		
 		
-		
+		#Footrpint
 		print(line)
 
 		
