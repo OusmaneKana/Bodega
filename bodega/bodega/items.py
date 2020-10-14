@@ -13,6 +13,9 @@ class BodegaItem(scrapy.Item):
     # name = scrapy.Field()
     name = scrapy.Field(serializer=str)
     price = scrapy.Field(serializer=str)
+    SKU  = scrapy.Field(serializer=str)
+    Model_number = scrapy.Field(serializer=str)
     link = scrapy.Field(serializer=str)
+    SB  = scrapy.Field(serializer=str)
 
  
