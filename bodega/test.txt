@@ -1,6 +1,0 @@
-{"Name": "Not Found", "SKU": "1002084995", "SB": "557223", "Price": "Not Found", "Model_number": "752002", "Wholesale_Price": "$19.90"}
-{"Name": "Not Found", "SKU": "1004041873", "SB": "557752", "Price": "Not Found", "Model_number": "HOTC5209B21M", "Wholesale_Price": "$336.18"}
-{"Name": "Not Found", "SKU": "1000334460", "SB": "557752", "Price": "Not Found", "Model_number": "40151", "Wholesale_Price": "$80.50"}
-{"Name": "Not Found", "SKU": "1002106352", "SB": "557752", "Price": "Not Found", "Model_number": "760842", "Wholesale_Price": "$218.30"}
-{"Name": "24 ft. Incandescent White Rope Light Kit", "SKU": "1000552674", "SB": "557223", "Price": "20", "Model_number": "RW24BCC", "Wholesale_Price": "$19.49"}
-{"Name": "Not Found", "SKU": "1001406724", "SB": "557223", "Price": "Not Found", "Model_number": "230EMN", "Wholesale_Price": "$32.27"}
