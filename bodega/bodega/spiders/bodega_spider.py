@@ -104,7 +104,7 @@ class Wholesale_Spider(scrapy.Spider):
 			except IndexError:
 				print('Not found')
 				new_link = 'https://www.homedepot.com/s/'+str(SKU)
-				yield scrapy.Request(new_link, callback=self.parse_homedepot2,meta={'SB':SB, 'SKU':SKU, 'Model_number': Model_number, 'Wholesale_Price':Wholesale_Price, 'Iterated': True})
+				yield response.follow(new_link, callback=self.parse_homedepot2,meta={'SB':SB, 'SKU':SKU, 'Model_number': Model_number, 'Wholesale_Price':Wholesale_Price, 'Iterated': True})
 
 
 
