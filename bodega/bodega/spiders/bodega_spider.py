@@ -96,8 +96,8 @@ class Wholesale_Spider(scrapy.Spider):
 
 
 		#Parse throught the homedepot page of the item and get the price and name if exists
-		if response.meta['Iterated']:
-			print("The page being parsed is", response.url)
+		if response.meta['Iterated'] == True:
+			print("Its a callback")
 
 		try:
 			name=response.xpath('//h1[@class="product-details__title"]/text()').extract().pop()
@@ -108,10 +108,6 @@ class Wholesale_Spider(scrapy.Spider):
 				name=response.xpath('//h1[@class="product-title__title"]/text()').extract().pop()
 			except IndexError:
 				name = 'Not found'
-			
-
-
-
 
 
 		try:
@@ -127,8 +123,6 @@ class Wholesale_Spider(scrapy.Spider):
 			except IndexError:
 				price = 'Not Found'
 
-
-
 		
 		#Load the item object before yielding it for output to pipeline.py
 		item['Name'] = name
@@ -140,6 +134,3 @@ class Wholesale_Spider(scrapy.Spider):
 		
 
 		yield item
-
-
-
