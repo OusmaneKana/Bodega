@@ -87,7 +87,54 @@ class Wholesale_Spider(scrapy.Spider):
 
 	def parse_homedepot(self,response):
 		
-		#Instantiation of the item object for the output feed 
+		#Instantiation of the item object for the output feed
+		SKU = response.meta['SKU']
+		SB = response.meta['SB']
+		Model_number = response.meta['Model_number']
+		Wholesale_Price = response.meta['Wholesale_Price']
+ 
+		print(f"*********\nThe Current page being parsed is{response.url} in HD1\n***********")
+
+		try:
+			name=response.xpath('//h1[@class="product-title__title"]/text()').extract().pop()
+		except IndexError:
+			
+			try:
+				name=response.xpath('//h1[@class="product-details__title"]/text()').extract().pop()
+			except IndexError:
+				name = "Not found"
+
+		if name =="Not found":
+			new_link = 'https://www.homedepot.com/s/'+str(SKU)
+			yield response.follow(new_link, callback=self.parse_homedepot2,meta={'SB':SB, 'SKU':SKU, 'Model_number': Model_number, 'Wholesale_Price':Wholesale_Price})
+		else:
+			try:
+				price = response.xpath('//div[@class="price"]')[0].extract()
+				price = re.findall(r'\d+',price)
+				price ="$"+".".join(price[:2])  
+			except IndexError:
+				
+				try:
+					price = response.xpath('//span[@id="ajaxPrice"]').extract().pop()
+					price = re.findall(r'\d+',price)
+					price ="$"+".".join(price[:2])
+				except IndexError:
+					price = 'Not Found'
+
+			item = BodegaItem()
+			item['Name'] = name
+			item['Price']= price
+			item['SKU']  = response.meta['SKU']
+			item['SB']  = response.meta['SB']
+			item['Model_number'] = response.meta['Model_number']
+			item['Wholesale_Price'] = response.meta['Wholesale_Price']
+
+
+			yield item
+
+
+
+	def parse_homedepot2(self, response):
 		item = BodegaItem()
 		SKU = response.meta['SKU']
 		SB = response.meta['SB']
@@ -95,15 +142,14 @@ class Wholesale_Spider(scrapy.Spider):
 		Wholesale_Price = response.meta['Wholesale_Price']
 
 
-		#Parse throught the homedepot page of the item and get the price and name if exists
-		if response.meta['Iterated'] == True:
-			print("Its a callback")
 
+		print(f"*********\nThe Current page being parsed is{response.url} in HD2 \n***********")
+		#Parse throught the homedepot page of the item and get the price and name if exists
 		try:
 			name=response.xpath('//h1[@class="product-details__title"]/text()').extract().pop()
 
 		except IndexError:
-			print('Second Name try')
+			print('Second Name try hd2')
 			try:
 				name=response.xpath('//h1[@class="product-title__title"]/text()').extract().pop()
 			except IndexError:
@@ -134,3 +180,4 @@ class Wholesale_Spider(scrapy.Spider):
 		
 
 		yield item
+
