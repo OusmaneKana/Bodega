@@ -47,7 +47,7 @@ class Wholesale_Spider(scrapy.Spider):
 
 	link = map(Wholesale_Link, ID)
 
-	start_urls = list(link)[0:5]
+	start_urls = list(link)[0:2]
 
 	def parse(self, response):
 
@@ -78,7 +78,7 @@ class Wholesale_Spider(scrapy.Spider):
 		Model_number = response.xpath("//table[@style=\"border:2px #000000 solid; border-collapse:collapse; width: 100%\"]//td[4]//text()").extract()
 
 		# Itterate though all the elements of the website
-		for i in range(3):
+		for i in range(len(SKU)):
 				#Generate the homepedot price according to the SKU
 				new_link = 'https://www.homedepot.com/s/'+str(Model_number[i])
 				# if (urllib.request.urlopen(new_link).getcode()) == 200:
