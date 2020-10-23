@@ -7,7 +7,7 @@ import csv
 import re
 
 # Start by extracting the data from the initial CVS and load them into the ID list
-excel_file_name = input("What is the name of the excel file ? :>  ")
+excel_file_name = 'sbler-Copy'
 try:
 	data = pd.read_excel(f'{excel_file_name}.xlsx', header=None)
 	ID =data[0].tolist()
