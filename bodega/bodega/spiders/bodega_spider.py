@@ -1,7 +1,7 @@
 import scrapy
 import sys
 import time
-from bodega.items import BodegaItem
+from items import BodegaItem
 import pandas as pd
 import csv
 import re
