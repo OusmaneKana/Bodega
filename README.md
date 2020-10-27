@@ -12,7 +12,3 @@ Mandatory dependencies
 
 
 
-Mandatory Files:
-- Have the initial excel renames "sbler" and formatted .xlsx in the same folder as the executable
-
-

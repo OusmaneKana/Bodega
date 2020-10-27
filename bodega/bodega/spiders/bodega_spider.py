@@ -1,20 +1,20 @@
 import scrapy
 import sys
 import time
-from items import BodegaItem
+from ..items import BodegaItem
 import pandas as pd
 import csv
 import re
 
 # Start by extracting the data from the initial CVS and load them into the ID list
-excel_file_name = 'sbler-Copy'
+excel_file_name = 'sbler'
 try:
 	data = pd.read_excel(f'{excel_file_name}.xlsx', header=None)
 	ID =data[0].tolist()
 except FileNotFoundError:
 	print("********************")
 	print("\nFile not found \n")
-	print("\n\nPLEASE MAKE SURE THE EXCEL FILE HAS THE RIGHT NAME")
+	print("\n\nPLEASE MAKE SURE THE EXCEL FILE \"sbler.xlsx\" IS PRESENT")
 	print("PROGRAM CANCELLED\n\n")
 	print("********************")
 	sys.exit()
@@ -25,7 +25,7 @@ except FileNotFoundError:
 
 for element in ID:
 	with open(f'dataBase\\{str(element)}.csv', mode='w', newline='') as csv_file:
-		fieldnames = ['SKU', 'Model_number','Name','Wholesale_Price','Price']
+		fieldnames = ['SKU', 'Model_number','Name','Wholesale_Price','HD_Price','Final_Price']
 		writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 		writer.writeheader()
 
@@ -47,7 +47,7 @@ class Wholesale_Spider(scrapy.Spider):
 
 	link = map(Wholesale_Link, ID)
 
-	start_urls = list(link)[0:2]
+	start_urls = list(link)
 
 	def parse(self, response):
 
@@ -83,7 +83,7 @@ class Wholesale_Spider(scrapy.Spider):
 				new_link = 'https://www.homedepot.com/s/'+str(Model_number[i])
 				# if (urllib.request.urlopen(new_link).getcode()) == 200:
 				# Follow the link generated to second craweler. Passes extra argument to parse_homedepot using meta {}
-				yield response.follow(new_link, callback=self.parse_homedepot,meta={'SB':SB, 'SKU':SKU[i], 'Model_number': Model_number[i], 'Wholesale_Price':Wholesale_Price[i], 'Iterated': False})
+				yield response.follow(new_link, callback=self.parse_homedepot,meta={'SB':SB, 'SKU':SKU[i], 'Model_number': Model_number[i], 'Wholesale_Price':Wholesale_Price[i].strip("$"), 'Iterated': False})
 
 	def parse_homedepot(self,response):
 		
@@ -123,7 +123,7 @@ class Wholesale_Spider(scrapy.Spider):
 
 			item = BodegaItem()
 			item['Name'] = name
-			item['Price']= price
+			item['HD_Price']= price
 			item['SKU']  = response.meta['SKU']
 			item['SB']  = response.meta['SB']
 			item['Model_number'] = response.meta['Model_number']
@@ -172,7 +172,7 @@ class Wholesale_Spider(scrapy.Spider):
 		
 		#Load the item object before yielding it for output to pipeline.py
 		item['Name'] = name
-		item['Price']= price
+		item['HD_Price']= price
 		item['SKU']  = response.meta['SKU']
 		item['SB']  = response.meta['SB']
 		item['Model_number'] = response.meta['Model_number']
