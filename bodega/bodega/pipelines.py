@@ -38,16 +38,25 @@ class BodegaPipeline:
 
 
 		#Overrite the CSVs that were crated at the beginning of the program execution in bodega_spider.py
+		
+		if item['HD_Price'] == 'Not Found':
+			Final_Price = (float(item['Wholesale_Price']) *15)/100 + float(item['Wholesale_Price'])
+		else:
+			Final_Price = item['HD_Price']
+
+		item['Final_Price']=Final_Price
+
+
 
 		self.file_csv = open('dataBase\\'+str(item['SB'])+'.csv', 'a+', newline='')
-		fieldnames = ['SKU', 'Model_number','Name','Wholesale_Price','Price']
+		fieldnames = ['SKU', 'Model_number','Name','Wholesale_Price','HD_Price','Final_Price']
 		self.writer = csv.DictWriter(self.file_csv, fieldnames=fieldnames)
 
-		line = json.dumps(ItemAdapter(item).asdict()) + "\n"
-
+		line = json.dumps(ItemAdapter(item).asdict()) +"\n"
 
 		# Pops the SB before writing it to the CSV to avoid a Missing header Error
 		item.pop('SB', None)
+
 		self.writer.writerow(item)		
 		# Writes to the output_log.txt
 		self.file_txt.write(line)		
