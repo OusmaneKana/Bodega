@@ -5,19 +5,28 @@ from ..items import BodegaItem
 import pandas as pd
 import csv
 import re
+from tkinter import filedialog
+from tkinter import *
+
 
 # Start by extracting the data from the initial CVS and load them into the ID list
-excel_file_name = 'sbler'
-try:
-	data = pd.read_excel(f'{excel_file_name}.xlsx', header=None)
-	ID =data[0].tolist()
-except FileNotFoundError:
-	print("********************")
-	print("\nFile not found \n")
-	print("\n\nPLEASE MAKE SURE THE EXCEL FILE \"sbler.xlsx\" IS PRESENT")
-	print("PROGRAM CANCELLED\n\n")
-	print("********************")
-	sys.exit()
+root = Tk()
+
+while True:
+	
+	root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("excel file ma niggah","*.xlsx"),("all files","*.*")))
+	root.filename = 'sbler'
+	try:
+		data = pd.read_excel(f'{root.filename}.xlsx', header=None)
+		ID =data[0].tolist()
+		break
+	except FileNotFoundError:
+		print("********************")
+		print("\nFile not found \n")
+		print("\n\nPLEASE MAKE SURE THE EXCEL FILE \"sbler.xlsx\" IS PRESENT")
+		print("PROGRAM CANCELLED\n\n")
+		print("********************")
+		sys.exit()
 
 
 
