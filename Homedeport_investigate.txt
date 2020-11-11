@@ -1,0 +1,15 @@
+Homedepot script investigation:
+
+- Look for a JS script, where you have place holder " What can we help you find" 
+- Interesting catch:  <button id="headerSearchButton" class="SearchBox__button" title="Submit Search">
+	<input class="SearchBox__input" id="headerSearch" type="text" autocomplete="off" required>
+
+- In J.S file line number 23256 .. !! Hot spot !!
+- About the search:
+	* id="headerSearchButton" class="SearchBox__button"
+	 <form onsubmit="THD_GLOBAL.submitSearch(this)
+	* search script is on index line 4328
+- Decode regex:
+	    var fix = new RegExp (/[^A-Za-z0-9,.\-_\/]|[<>\[\]?+\^\&]/g);
+- Get the existance of the page straight from:
+	 THD_GLOBAL.submitSearch = function submitSearch(form){

@@ -1,0 +1,3 @@
+Homedepot script investigation:
+
+- Look for a JS script, where you have place holder " What can we help you find" 

@@ -10,14 +10,14 @@ from tkinter import *
 
 
 # Start by extracting the data from the initial CVS and load them into the ID list
-root = Tk()
 
 while True:
-	
+	root = Tk()
+
 	root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("excel file ma niggah","*.xlsx"),("all files","*.*")))
-	root.filename = 'sbler'
+	print(root.filename)
 	try:
-		data = pd.read_excel(f'{root.filename}.xlsx', header=None)
+		data = pd.read_excel(f'{root.filename}', header=None)
 		ID =data[0].tolist()
 		break
 	except FileNotFoundError:
