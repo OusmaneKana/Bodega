@@ -11,6 +11,7 @@ from tkinter import *
 
 # Start by extracting the data from the initial CVS and load them into the ID list
 
+# Use the GUI to ask where is the inintial csv located at. 
 while True:
 	root = Tk()
 
@@ -29,8 +30,10 @@ while True:
 		sys.exit()
 
 
-
 # Create the receiving CSVs and na,e each of them according to their ID's
+
+# Use the GUI to also ask where the saving DataBase is ????
+
 
 for element in ID:
 	with open(f'dataBase\\{str(element)}.csv', mode='w', newline='') as csv_file:
