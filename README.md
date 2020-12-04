@@ -1,5 +1,5 @@
 # Bodega
-Bodega scrapper
+Double layer web-scapper mainly built over the scrapy library
 
 How to use to script. 
 

@@ -5,32 +5,31 @@ from ..items import BodegaItem
 import pandas as pd
 import csv
 import re
+import os 
 from tkinter import filedialog
 from tkinter import *
 
 
 # Start by extracting the data from the initial CVS and load them into the ID list
 
-while True:
-	root = Tk()
+# Use the GUI to ask where is the inintial csv located at. 
 
-	root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("excel file ma niggah","*.xlsx"),("all files","*.*")))
-	print(root.filename)
-	try:
-		data = pd.read_excel(f'{root.filename}', header=None)
-		ID =data[0].tolist()
-		break
-	except FileNotFoundError:
-		print("********************")
-		print("\nFile not found \n")
-		print("\n\nPLEASE MAKE SURE THE EXCEL FILE \"sbler.xlsx\" IS PRESENT")
-		print("PROGRAM CANCELLED\n\n")
-		print("********************")
-		sys.exit()
+current_dir = os.getcwd()
+root = Tk()
 
+root.filename =  filedialog.askopenfilename(initialdir = current_dir,title = "Select file",filetypes = (("excel file ma niggah","*.xlsx"),("all files","*.*")))
+print(root.filename)
+root.destroy()
+
+data = pd.read_excel(f'{root.filename}', header=None)
+ID =data[0].tolist()
 
 
 # Create the receiving CSVs and na,e each of them according to their ID's
+
+# Use the GUI to also ask where the saving DataBase is ????
+if not os.path.exists('dataBase'):
+    os.makedirs('dataBase')
 
 for element in ID:
 	with open(f'dataBase\\{str(element)}.csv', mode='w', newline='') as csv_file:
