@@ -36,6 +36,7 @@ ITEM_PIPELINES = {
 #MISTER ASSHHH ***** RIGHT HERE ABI !!! *****
 
 #DOWNLOAD_DELAY = 2
+#AUTOTHROTTLE_ENABLED = True
 
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
